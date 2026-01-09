@@ -54,7 +54,7 @@ class AlterPayablesDecimalPrecision extends Migration
             ],
         ];
 
-        $this->forge->modifyColumn('payable', $fields);
+        $this->forge->modifyColumn('payables', $fields);
     }
 
     public function down()
@@ -69,6 +69,6 @@ class AlterPayablesDecimalPrecision extends Migration
             'tasaCero' => ['name' => 'tasaCero', 'type' => 'DECIMAL', 'constraint' => '18', 'null' => true],
         ];
 
-        $this->forge->modifyColumn('payable', $fields);
+        $this->forge->modifyColumn('payables', $fields);
     }
 }
