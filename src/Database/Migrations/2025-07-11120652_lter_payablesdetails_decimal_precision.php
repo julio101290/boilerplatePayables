@@ -78,7 +78,7 @@ class AlterPayablesDetailsDecimalPrecision extends Migration
             ],
         ];
 
-        $this->forge->modifyColumn('payabledetails', $fields);
+        $this->forge->modifyColumn('payablesdetails', $fields);
     }
 
     public function down()
@@ -97,6 +97,6 @@ class AlterPayablesDetailsDecimalPrecision extends Migration
             'importeExento' => ['name' => 'importeExento', 'type' => 'DECIMAL', 'constraint' => '18', 'null' => true],
         ];
 
-        $this->forge->modifyColumn('payabledetails', $fields);
+        $this->forge->modifyColumn('payablesdetails', $fields);
     }
 }
