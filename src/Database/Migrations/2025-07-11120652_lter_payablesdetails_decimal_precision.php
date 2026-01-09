@@ -5,7 +5,7 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class AlterSellsDetailsDecimalPrecision extends Migration
+class AlterPayablesDetailsDecimalPrecision extends Migration
 {
     public function up()
     {
@@ -78,7 +78,7 @@ class AlterSellsDetailsDecimalPrecision extends Migration
             ],
         ];
 
-        $this->forge->modifyColumn('sellsdetails', $fields);
+        $this->forge->modifyColumn('payabledetails', $fields);
     }
 
     public function down()
@@ -97,6 +97,6 @@ class AlterSellsDetailsDecimalPrecision extends Migration
             'importeExento' => ['name' => 'importeExento', 'type' => 'DECIMAL', 'constraint' => '18', 'null' => true],
         ];
 
-        $this->forge->modifyColumn('sellsdetails', $fields);
+        $this->forge->modifyColumn('payabledetails', $fields);
     }
 }

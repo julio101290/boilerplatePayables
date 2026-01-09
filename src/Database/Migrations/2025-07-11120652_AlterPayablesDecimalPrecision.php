@@ -5,7 +5,7 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class AlterSellsDecimalPrecision extends Migration
+class AlterPayablesDecimalPrecision extends Migration
 {
     public function up()
     {
@@ -54,7 +54,7 @@ class AlterSellsDecimalPrecision extends Migration
             ],
         ];
 
-        $this->forge->modifyColumn('sells', $fields);
+        $this->forge->modifyColumn('payable', $fields);
     }
 
     public function down()
@@ -69,6 +69,6 @@ class AlterSellsDecimalPrecision extends Migration
             'tasaCero' => ['name' => 'tasaCero', 'type' => 'DECIMAL', 'constraint' => '18', 'null' => true],
         ];
 
-        $this->forge->modifyColumn('sells', $fields);
+        $this->forge->modifyColumn('payable', $fields);
     }
 }

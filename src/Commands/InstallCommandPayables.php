@@ -1,6 +1,6 @@
 <?php
 
-namespace julio101290\boilerplatesells\Commands;
+namespace julio101290\boilerplatepayables\Commands;
 
 use CodeIgniter\CLI\BaseCommand;
 use Config\Database;
@@ -10,7 +10,7 @@ use CodeIgniter\CLI\CLI;
 /**
  * Class InstallCommand.
  */
-class InstallCommandsells extends BaseCommand
+class InstallCommandpayables extends BaseCommand
 {
     /**
      * The group the command is lumped under
@@ -18,28 +18,28 @@ class InstallCommandsells extends BaseCommand
      *
      * @var string
      */
-    protected $group = 'boilerplatesells';
+    protected $group = 'boilerplatepayables';
 
     /**
      * The command's name.
      *
      * @var string
      */
-    protected $name = 'boilerplatesells:installsells';
+    protected $name = 'boilerplatepayables:installpayables';
 
     /**
      * The command's short description.
      *
      * @var string
      */
-    protected $description = 'Db install for basic boilerplate sells data.';
+    protected $description = 'Db install for basic boilerplate payables data.';
 
     /**
      * The command's usage.
      *
      * @var string
      */
-    protected $usage = 'boilerplatesells:installsells';
+    protected $usage = 'boilerplatepayables:installpayables';
 
     /**
      * The commamd's argument.
@@ -72,7 +72,7 @@ class InstallCommandsells extends BaseCommand
             $this->call('migrate');
             // then seed data
             $seeder = Database::seeder();
-            $seeder->call('julio101290\boilerplatesells\Database\Seeds\BoilerplateSells');
+            $seeder->call('julio101290\boilerplatepayables\Database\Seeds\BoilerplatePayables');
         } catch (\Exception $e) {
             $this->showError($e);
         }

@@ -4,10 +4,10 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class Sells extends Migration {
+class Payables extends Migration {
 
     public function up() {
-        // Sells
+        // Payables
         $this->forge->addField([
                 'id' => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
                 'idEmpresa' => ['type' => 'int', 'constraint' => 11, 'null' => true],
@@ -54,10 +54,10 @@ class Sells extends Migration {
                 'deleted_at'  => ['type' => 'datetime', 'null'  => true],
         ]);
         $this->forge->addKey('id', true);
-        $this->forge->createTable('sells', true);
+        $this->forge->createTable('payables', true);
     }
 
     public function down() {
-        $this->forge->dropTable('sells', true);
+        $this->forge->dropTable('payables', true);
     }
 }

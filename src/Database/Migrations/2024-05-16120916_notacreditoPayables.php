@@ -4,7 +4,7 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class NotasCredito extends Migration {
+class NotasCreditoPayable extends Migration {
 
     public function up() {
         // Quotes  
@@ -56,10 +56,10 @@ class NotasCredito extends Migration {
 
         $this->forge->addKey('id', true);
         $this->forge->addUniqueKey('UUID', 'UQ_UUID');
-        $this->forge->createTable('notascredito', true);
+        $this->forge->createTable('notascreditopayable', true);
     }
 
     public function down() {
-        $this->forge->dropTable('notascredito', true);
+        $this->forge->dropTable('notascreditopayable', true);
     }
 }

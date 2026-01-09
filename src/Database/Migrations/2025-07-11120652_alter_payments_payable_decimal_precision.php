@@ -24,7 +24,7 @@ class AlterPaymentsDecimalPrecision extends Migration
             ],
         ];
 
-        $this->forge->modifyColumn('payments', $fields);
+        $this->forge->modifyColumn('paymentspayable', $fields);
     }
 
     public function down()
@@ -44,6 +44,6 @@ class AlterPaymentsDecimalPrecision extends Migration
             ],
         ];
 
-        $this->forge->modifyColumn('payments', $fields);
+        $this->forge->modifyColumn('paymentspayable', $fields);
     }
 }

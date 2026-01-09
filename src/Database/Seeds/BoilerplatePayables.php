@@ -1,6 +1,6 @@
 <?php
 
-namespace julio101290\boilerplatesells\Database\Seeds;
+namespace julio101290\boilerplatepayables\Database\Seeds;
 
 use CodeIgniter\Config\Services;
 use CodeIgniter\Database\Seeder;
@@ -37,14 +37,14 @@ class BoilerplateSells extends Seeder {
 
 
         // Permission
-        $this->authorize->createPermission('sells-permission', 'Permission to view sells list');
+        $this->authorize->createPermission('payables-permission', 'Permission to view payables list');
 
         // Assign Permission to user
-        $this->authorize->addPermissionToUser('sells-permission', 1);
+        $this->authorize->addPermissionToUser('payables-permission', 1);
         
-        $this->authorize->createPermission('listaNotaCredito-permission', 'Permiso para la lista de notas de crédito');
-        $this->authorize->addPermissionToGroup('listaNotaCredito-permission', 'admin');
-        $this->authorize->addPermissionToUser('listaNotaCredito-permission', 1);
+        $this->authorize->createPermission('listaNotaCreditoPayables-permission', 'Permiso para la lista de notas de crédito de proveedor');
+        $this->authorize->addPermissionToGroup('listaNotaCreditoPayables-permission', 'admin');
+        $this->authorize->addPermissionToUser('listaNotaCreditoPayables-permission', 1);
 
     }
 
