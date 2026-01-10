@@ -10,7 +10,7 @@ class Payablesdetails extends Migration {
         // Payablesdetails
         $this->forge->addField([
             'id' => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
-            'idSell' => ['type' => 'int', 'constraint' => 11, 'null' => true],
+            'idPayable' => ['type' => 'int', 'constraint' => 11, 'null' => true],
             'idProduct' => ['type' => 'int', 'constraint' => 11, 'null' => true],
             'lote' => ['type' => 'varchar', 'constraint' => 64, 'null' => true],
             'idAlmacen' => ['type' => 'bigint', 'constraint' => 20, 'null' => false],

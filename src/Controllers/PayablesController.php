@@ -21,7 +21,7 @@ use julio101290\boilerplatevehicles\Models\TipovehiculoModel;
 use julio101290\boilerplatebranchoffice\Models\BranchofficesModel;
 use julio101290\boilerplatecashtonnage\Models\ArqueoCajaModel;
 use julio101290\boilerplateinventory\Models\SaldosModel;
-use julio101290\boilerplatepayables\Models\EnlacexmlModel;
+use julio101290\boilerplatesells\Models\EnlacexmlModel;
 use julio101290\boilerplateCFDI\Models\XmlModel;
 use julio101290\boilerplateCFDI\Controllers\XmlController;
 
@@ -129,8 +129,8 @@ class PayablesController extends BaseController {
         $tiposVehiculo = $this->tiposVehiculo->mdlGetTipovehiculoArray($empresasID);
 
         $titulos["tiposVehiculo"] = $tiposVehiculo;
-        $titulos["listaTitle"] = "Administracion de ventas";
-        $titulos["listaSubtitle"] = "Muestra la lista de ventas";
+        $titulos["listaTitle"] = lang("payables.title");
+        $titulos["listaSubtitle"] = lang("payables.subtitle");
 
         //$data["data"] = $datos;
         return view('julio101290\boilerplatepayables\Views\payables', $titulos);
@@ -305,13 +305,8 @@ class PayablesController extends BaseController {
             $searchValue = $this->request->getVar('search')['value'] ?? '';
             $order = $this->request->getVar('order');
             $columns = $this->request->getVar('columns');
-            
-            
 
             // Parámetros personalizados para filtrar
-           
-       
-
             // Obtener query base sin paginar
             $queryBuilder = $this->payables->mdlVentasPorProductos(
                     $idEmpresa, $idSucursal, $idProducto,
@@ -455,8 +450,8 @@ class PayablesController extends BaseController {
 
         $tiposVehiculo = $this->tiposVehiculo->mdlGetTipovehiculoArray($empresasID);
 
-        $titulos["title"] = "Nueva Venta"; //lang('registerNew.title');
-        $titulos["subtitle"] = "Captura de Ventas"; // lang('registerNew.subtitle');
+        $titulos["title"] = lang('newPayable.title');
+        $titulos["subtitle"] = lang('newPayable.subtitle');
         $titulos["tiposVehiculo"] = $tiposVehiculo;
 
         $titulos["totalExento"] = "0";
@@ -1002,9 +997,11 @@ class PayablesController extends BaseController {
 
                     if ($this->payablesDetail->save($datosDetalle) === false) {
 
-                        echo "error al insertar el producto $datosDetalle[idProducto]";
+                        echo "<pre>";
+                        echo "Error al insertar el producto {$datosDetalle['idProduct']}\n";
+                        print_r($this->payablesDetail->errors());
+                        echo "</pre>";
 
-                        $this->payablesDetail->db->transRollback();
                         return;
                     } else {
 

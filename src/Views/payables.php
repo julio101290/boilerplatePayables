@@ -12,12 +12,12 @@
 <!-- Section content -->
 <?= $this->section('content') ?>
 
-<?= $this->include('julio101290\boilerplatesells\Views\modulesSells/modaSendMail') ?>
+<?= $this->include('julio101290\boilerplatepayables\Views\modulesPayables/modaSendMail') ?>
 
-<?= $this->include('julio101290\boilerplatesells\Views\modulesSells/paymentsList') ?>
-<?= $this->include('julio101290\boilerplatesells\modulesSells/modalPaymentList') ?>
-<?= $this->include('julio101290\boilerplatesells\modulesSells/listaFacturas') ?>
-<?= $this->include('julio101290\boilerplatesells\modulesSells/xmlList') ?>
+<?= $this->include('julio101290\boilerplatepayables\Views\modulesPayables/paymentsList') ?>
+<?= $this->include('julio101290\boilerplatepayables\modulesPayables/modalPaymentList') ?>
+<?= $this->include('julio101290\boilerplatepayables\modulesPayables/listaFacturas') ?>
+<?= $this->include('julio101290\boilerplatepayables\modulesPayables/xmlList') ?>
 
 
 <!-- SELECT2 EXAMPLE -->
@@ -40,7 +40,7 @@
 
 
                 <div class="form-group">
-                    <label for="idEmpresa"><?= lang('sells.companie') ?> </label>
+                    <label for="idEmpresa"><?= lang('payables.companie') ?> </label>
                     <select id='idEmpresa' name='idEmpresa' class="idEmpresa" style='width: 80%;'>
 
                         <?php
@@ -49,7 +49,7 @@
                             echo "   <option value='$idEmpresa'>$idEmpresa - $nombreEmpresa</option>";
                         } else {
 
-                            echo "  <option value='0'>" . lang('sells.allCompanies') . "</option>";
+                            echo "  <option value='0'>" . lang('payables.allCompanies') . "</option>";
 
                             foreach ($empresas as $key => $value) {
 
@@ -69,11 +69,11 @@
 
 
                 <div class="form-group">
-                    <label for="idSucursal"><?= lang('sells.branchoffice') ?> </label>
+                    <label for="idSucursal"><?= lang('payables.branchoffice') ?> </label>
                     <select id='idSucursal' name='idSucursal' class="idSucursal" style='width: 100%;'>
 
                         <?php
-                        echo "  <option value='0'>" . lang('sells.AllBranchoffice') . "</option>";
+                        echo "  <option value='0'>" . lang('payables.AllBranchoffice') . "</option>";
                         if (isset($idSucursal)) {
 
                             echo "   <option value='$idSucursal'>$idSucursal - $nombreSucursal</option>";
@@ -93,11 +93,11 @@
 
 
                 <div class="form-group">
-                    <label for="productos"><?= lang('sells.branchoffice') ?> </label>
+                    <label for="productos"><?= lang('payables.branchoffice') ?> </label>
                     <select id='clientes' name='clientes' class="clientes" style='width: 100%;'>
 
                         <?php
-                        echo "  <option value='0'>" . lang('sells.allCustumer') . "</option>";
+                        echo "  <option value='0'>" . lang('payables.allCustumer') . "</option>";
                         ?>
 
                     </select>
@@ -109,7 +109,7 @@
 
 
 
-                <input type="checkbox" id="chkTodasLasVentas" name="chkTodasLasVentas" class="chkTodasLasVentas" data-width="250" data-height="40" checked data-toggle="toggle" data-on="<?= lang('sells.allSells') ?>" data-off="<?= lang('sells.pendingPayment') ?>" data-onstyle="success" data-offstyle="danger">
+                <input type="checkbox" id="chkTodasLasVentas" name="chkTodasLasVentas" class="chkTodasLasVentas" data-width="250" data-height="40" checked data-toggle="toggle" data-on="<?= lang('payables.allPayables') ?>" data-off="<?= lang('payables.pendingPayment') ?>" data-onstyle="success" data-offstyle="danger">
 
             </div>
 
@@ -119,9 +119,9 @@
         <div class="float-right">
             <div class="btn-group">
 
-                <a href="<?= base_url("admin/newSells") ?>" class="btn btn-primary btnAddCustumers" data-target="#modalAddCustumers"><i class="fa fa-plus"></i>
+                <a href="<?= base_url("admin/newPayables") ?>" class="btn btn-primary btnAddCustumers" data-target="#modalAddCustumers"><i class="fa fa-plus"></i>
 
-                    <?= lang('sells.add') ?>
+                    <?= lang('payables.add') ?>
 
                 </a>
 
@@ -135,54 +135,54 @@
 
                 <div class="table-responsive">
 
-                    <table id="tableSells" class="table table-striped table-hover va-middle tableSells">
+                    <table id="tablePayables" class="table table-striped table-hover va-middle tablePayables">
 
                         <thead>
 
                             <tr>
 
-                                <th><?= lang('sells.fields.row') ?></th>
+                                <th><?= lang('payables.fields.row') ?></th>
                                 <th>
-                                    <?= lang('sells.fields.folio') ?>
+                                    <?= lang('payables.fields.folio') ?>
                                 </th>
                                 <th>
-                                    <?= lang('sells.fields.custumer') ?>
+                                    <?= lang('payables.fields.custumer') ?>
                                 </th>
                                 <th>
-                                    <?= lang('sells.fields.date') ?>
-                                </th>
-
-                                <th>
-                                    <?= lang('sells.fields.expirationDate') ?>
-                                </th>
-                                <th>
-                                    <?= lang('sells.fields.subTotal') ?>
-                                </th>
-                                <th>
-                                    <?= lang('sells.fields.tax') ?>
-                                </th>
-                                <th>
-                                    <?= lang('sells.fields.total') ?>
+                                    <?= lang('payables.fields.date') ?>
                                 </th>
 
                                 <th>
-                                    <?= lang('sells.fields.pending') ?>
+                                    <?= lang('payables.fields.expirationDate') ?>
                                 </th>
                                 <th>
-                                    <?= lang('sells.fields.timeDelevery') ?>
+                                    <?= lang('payables.fields.subTotal') ?>
                                 </th>
                                 <th>
-                                    <?= lang('sells.fields.created_at') ?>
+                                    <?= lang('payables.fields.tax') ?>
                                 </th>
                                 <th>
-                                    <?= lang('sells.fields.updated_at') ?>
-                                </th>
-                                <th>
-                                    <?= lang('sells.fields.deleted_at') ?>
+                                    <?= lang('payables.fields.total') ?>
                                 </th>
 
                                 <th>
-                                    <?= lang('sells.fields.actions') ?>
+                                    <?= lang('payables.fields.pending') ?>
+                                </th>
+                                <th>
+                                    <?= lang('payables.fields.timeDelevery') ?>
+                                </th>
+                                <th>
+                                    <?= lang('payables.fields.created_at') ?>
+                                </th>
+                                <th>
+                                    <?= lang('payables.fields.updated_at') ?>
+                                </th>
+                                <th>
+                                    <?= lang('payables.fields.deleted_at') ?>
+                                </th>
+
+                                <th>
+                                    <?= lang('payables.fields.actions') ?>
                                 </th>
 
                             </tr>
@@ -206,14 +206,14 @@
      * Cargamos la tabla
      */
 
-    var tableQuotes = $('#tableSells').DataTable({
+    var tableQuotes = $('#tablePayables').DataTable({
         processing: true,
         serverSide: true,
         dom: 'Bfrtip',
         buttons: ['copy', 'csv', 'excel', 'pdf', 'print', 'pageLength'],
         lengthMenu: [
             [150, 200, 500, -1],
-            ['150  <?= lang('sells.fields.rows') ?>', '200  <?= lang('sells.fields.rows') ?>', '500  <?= lang('sells.fields.rows') ?>', ' <?= lang('sells.all') ?>']
+            ['150  <?= lang('payables.fields.rows') ?>', '200  <?= lang('payables.fields.rows') ?>', '500  <?= lang('payables.fields.rows') ?>', ' <?= lang('payables.all') ?>']
         ],
         responsive: true,
         autoWidth: false,
@@ -222,7 +222,7 @@
         ],
 
         ajax: {
-            url: '<?= base_url('admin/sells') ?>',
+            url: '<?= base_url('admin/payables') ?>',
             method: 'get',
             dataType: "json"
         },
@@ -441,7 +441,7 @@
 
         }
 
-        tableQuotes.ajax.url(`<?= base_url('admin/sells') ?>/` + desdeFecha + '/' + hastaFecha + '/' + todas + '/' + idEmpresa + '/' + idSucursal + '/' + idCliente).load();
+        tableQuotes.ajax.url(`<?= base_url('admin/payables') ?>/` + desdeFecha + '/' + hastaFecha + '/' + todas + '/' + idEmpresa + '/' + idSucursal + '/' + idCliente).load();
 
     });
 
@@ -453,7 +453,7 @@
      Load Payment List 
      =============================================*/
 
-    $(".tableSells").on("click", '.btnPaymentsList', function () {
+    $(".tablePayables").on("click", '.btnPaymentsList', function () {
 
 
         var uuid = $(this).attr("uuid");
@@ -470,7 +470,7 @@
      Carga XML sin asignar
      =============================================*/
 
-    $(".tableSells").on("click", '.btnListXML', function () {
+    $(".tablePayables").on("click", '.btnListXML', function () {
 
 
         var uuidSell = $(this).attr("uuid");
@@ -486,7 +486,7 @@
      Load invouce List 
      =============================================*/
 
-    $(".tableSells").on("click", '.btnInvoiceList', function () {
+    $(".tablePayables").on("click", '.btnInvoiceList', function () {
 
 
         var uuid = $(this).attr("uuid");
@@ -502,7 +502,7 @@
      ENVIAR CORREO  
      =============================================*/
 
-    $(".tableSells").on("click", '.btnSendMail', function () {
+    $(".tablePayables").on("click", '.btnSendMail', function () {
 
         var uuid = $(this).attr("uuid");
         var folio = $(this).attr("folio");
@@ -535,7 +535,7 @@
      ENVIAR CORREO  
      =============================================*/
 
-    $(".tableSells").on("click", '.btnTimbrar', function () {
+    $(".tablePayables").on("click", '.btnTimbrar', function () {
 
         var uuid = $(this).attr("uuid");
 
@@ -664,7 +664,7 @@
      ENVIAR CORREO  
      =============================================*/
 
-    $(".tableSells").on("click", '.btnSetPayment', function () {
+    $(".tablePayables").on("click", '.btnSetPayment', function () {
 
         var uuid = $(this).attr("uuid");
         var balance = $(this).attr("balance");
@@ -685,12 +685,12 @@
      IMPRIMIR VEnta
      =============================================*/
 
-    $(".tableSells").on("click", '.btnImprimirVenta', function () {
+    $(".tablePayables").on("click", '.btnImprimirVenta', function () {
 
         var uuid = $(this).attr("uuid");
 
 
-        window.open("<?= base_url('admin/sells/report') ?>" + "/" + uuid, "_blank");
+        window.open("<?= base_url('admin/payables/report') ?>" + "/" + uuid, "_blank");
 
     });
 
@@ -698,7 +698,7 @@
     /*=============================================
      ELIMINAR custumers
      =============================================*/
-    $(".tableSells").on("click", ".btn-delete", function () {
+    $(".tablePayables").on("click", ".btn-delete", function () {
 
         var idSell = $(this).attr("data-id");
 
@@ -714,7 +714,7 @@
                 .then((result) => {
                     if (result.value) {
                         $.ajax({
-                            url: `<?= base_url('admin/sells') ?>/` + idSell,
+                            url: `<?= base_url('admin/payables') ?>/` + idSell,
                             method: 'DELETE',
                         }).done((data, textStatus, jqXHR) => {
                             Toast.fire({
@@ -765,7 +765,7 @@
             var idSucursal = $("#idSucursal").val();
             var idCliente = $("#clientes").val();
 
-            tableQuotes.ajax.url(`<?= base_url('admin/sells') ?>/` + desdeFecha + '/' + hastaFecha + '/' + todas + '/' + idEmpresa + '/' + idSucursal + '/' + idCliente).load();
+            tableQuotes.ajax.url(`<?= base_url('admin/payables') ?>/` + desdeFecha + '/' + hastaFecha + '/' + todas + '/' + idEmpresa + '/' + idSucursal + '/' + idCliente).load();
 
 
         }
@@ -796,7 +796,7 @@
 <?php
 if (isset($cliente)) {
 
-    echo "tableQuotes.ajax.url('" . base_url('admin/sells') . "/$desdeFecha/$hastaFecha/$todas/$empresa/$sucursal/$cliente').load()";
+    echo "tableQuotes.ajax.url('" . base_url('admin/payables') . "/$desdeFecha/$hastaFecha/$todas/$empresa/$sucursal/$cliente').load()";
 }
 ?>
     })

@@ -4,11 +4,11 @@ $payables["logDescription"] = "El registro en ventas fue guardado con los siguie
 $payables["logUpdate"] = "El registro en ventas fue actualizado con los siguientes datos:";
 $payables["logDeleted"] = "El registro en ventas fue eliminado con los siguientes datos:";
 $payables["msg_delete"] = "El Registro en ventas fue eliminado correctamente:";
-$payables["add"] = "Nueva venta";
-$payables["edit"] = "Editar venta";
+$payables["add"] = "Nueva Factura de Proveedor";
+$payables["edit"] = "Editar Factura de proveedor";
 $payables["createEdit"] = "Crear / Editar";
-$payables["title"] = "Admon. Ventas";
-$payables["subtitle"] = "Lista de Ventas";
+$payables["title"] = "Admon. Facturas de Proveedor";
+$payables["subtitle"] = "Lista de Facturas de proveedor";
 
 $payables["companie"] = "Empresa";
 $payables["allCompanies"] = "Todas las empresas";
@@ -17,7 +17,7 @@ $payables["AllBranchoffice"] = "Todas las Sucursales ";
 $payables["custumer"] = "Cliente ";
 $payables["allCustumer"] = "Todos los Clientes ";
 
-$payables["allSells"] = "Todas las ventas";
+$payables["allPayables"] = "Todas las facturas";
 $payables["pendingPayment"] = "Pendiente de pago";
 
 $payables["fields"]["row"] = "#";

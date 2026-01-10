@@ -4,11 +4,11 @@ $newPayables["logDescription"] = "El registro en ventas fue guardado con los sig
 $newPayables["logUpdate"] = "El registro en ventas fue actualizado con los siguientes datos:";
 $newPayables["logDeleted"] = "El registro en ventas fue eliminado con los siguientes datos:";
 $newPayables["msg_delete"] = "El Registro en ventas fue eliminado correctamente:";
-$newPayables["add"] = "Nueva venta";
-$newPayables["edit"] = "Editar venta";
+$newPayables["add"] = "Nueva Factura de Proveedor";
+$newPayables["edit"] = "Editar Factura de Proveedor";
 $newPayables["createEdit"] = "Crear / Editar";
-$newPayables["title"] = "Admon. Ventas";
-$newPayables["subtitle"] = "Lista de Ventas";
+$newPayables["title"] = "Admon. Facturas de Proveedor";
+$newPayables["subtitle"] = "Lista de Facturas de Proveedor";
 
 
 /**
@@ -34,14 +34,14 @@ $newPayables["folio"] = "Folio No.";
 $newPayables["typeVoucher"] = "Tipo Comprobante";
 $newPayables["selectTypeVoucher"] = "Seleccione tipo comprobante";
 $newPayables["numVoucher"] = "Comprobante No.";
-$newPayables["custumer"] = "Cliente ";
-$newPayables["selectCustumer"] = "Seleccione Cliente ";
+$newPayables["custumer"] = "Proveedor ";
+$newPayables["selectCustumer"] = "Seleccione Proveedor ";
 
 $newPayables["expirationDate"] = "Fecha Vencimiento ";
 $newPayables["addArticle"] = "Agregar Articulo ";
-$newPayables["newCustumer"] = "Cliente Nuevo ";
+$newPayables["newCustumer"] = "Proveedor Nuevo ";
 
-$newPayables["sellDetail"] = "Detalle de la venta";
+$newPayables["payableDetail"] = "Detalle de la factura de proveedor";
 
 
 $newPayables["fields"]["row"] = "#";
@@ -85,7 +85,7 @@ $newPayables["stampSuccess"] = "Timbrada Correctamente";
 $newPayables["selectAtLeastOneProduct"] = "Seleccione al menos un producto";
 
 $newPayables["quoteTo"] = "Cotizar a";
-$newPayables["sellsObservations"] = "Observaciones";
+$newPayables["payablesObservations"] = "Observaciones";
 $newPayables["deleveryTime"] = "Tiempo de entrega";
 
 $newPayables["vehiclePlate"] = "Vehiculo/Placa";
@@ -142,16 +142,16 @@ $newPayables["receiverFiscalRegimen"] = "Regimen Fiscal Receptor";
 $newPayables["relationType"] = "Tipo Relacion";
 $newPayables["UUIDRelation"] = "UUID Relacion";
 
-$newPayables["sellsReportsTitle"] = "Reporte de Ventas";
-$newPayables["sellsReportsSubTitle"] = "Ventas por Empresa, Sucursal, Producto";
+$newPayables["payablesReportsTitle"] = "Reporte de Ventas";
+$newPayables["payablesReportsSubTitle"] = "Ventas por Empresa, Sucursal, Producto";
 
 
 /**
  * PDF
  */
 
-$newPayables["sellNote"] = "Nota De Venta";
-$newPayables["seller"] = "Vendedor";
+$newPayables["payableNote"] = "Nota De Venta";
+$newPayables["payableer"] = "Vendedor";
 $newPayables["validity"] = "Vigencia";
 $newPayables["thanks"] = "Gracias por su compra!";
 

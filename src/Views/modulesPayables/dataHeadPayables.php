@@ -768,7 +768,7 @@
         // Initialize select2 storages
         $("#custumerPayable").select2({
             ajax: {
-                url: "<?= site_url('admin/custumers/getCustumersAjax') ?>",
+                url: "<?= site_url('admin/proveedores/getProveedoresAjax') ?>",
                 type: "post",
                 dataType: 'json',
                 delay: 250,

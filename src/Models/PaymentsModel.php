@@ -1,18 +1,18 @@
 <?php
 
-namespace julio101290\boilerplatesells\Models;
+namespace julio101290\boilerplatepayables\Models;
 
 use CodeIgniter\Model;
 
 class PaymentsModel extends Model {
 
-    protected $table = 'payments';
+    protected $table = 'paymentspayable';
     protected $primaryKey = 'id';
     protected $useAutoIncrement = true;
     protected $returnType = 'array';
     protected $useSoftDeletes = true;
     protected $allowedFields = ['id'
-        , 'idSell'
+        , 'idPayable'
         , 'importPayment'
         , 'importBack'
         , 'datePayment'
@@ -28,7 +28,7 @@ class PaymentsModel extends Model {
     protected $createdField = 'created_at';
     protected $deletedField = 'deleted_at';
     protected $validationRules = [
-        'idSell' => 'required|is_natural_no_zero',
+        'idPayable' => 'required|is_natural_no_zero',
         'importPayment' => 'required|decimal',
         'importBack' => 'required|decimal',
         'datePayment' => 'required|valid_date[Y-m-d H:i:s]',
@@ -39,7 +39,7 @@ class PaymentsModel extends Model {
         'tipo' => 'permit_empty|string|max_length[5]',
     ];
     protected $validationMessages = [
-        'idSell' => [
+        'idPayable' => [
             'required' => 'El campo "Venta relacionada" es obligatorio.',
             'is_natural_no_zero' => 'Debe ser un número entero mayor a cero.'
         ],
