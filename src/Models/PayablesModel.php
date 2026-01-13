@@ -437,7 +437,7 @@ class PayablesModel extends Model {
             a.updated_at,
             a.deleted_at
         ")
-                ->join('custumers b', 'a.idCustumer = b.id', 'left')
+                ->join('proveedores b', 'a.idCustumer = b.id', 'left')
                 ->join('empresas c', 'a.idEmpresa = c.id', 'left')
                 ->where('a.UUID', $uuid)
                 ->whereIn('a.idEmpresa', $empresas)

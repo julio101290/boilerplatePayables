@@ -18,7 +18,7 @@
 <?= $this->include('julio101290\boilerplatepayables\modulesPayables/modalPaymentList') ?>
 <?= $this->include('julio101290\boilerplatepayables\modulesPayables/listaFacturas') ?>
 <?= $this->include('julio101290\boilerplatepayables\modulesPayables/xmlList') ?>
-
+<?= $this->include('julio101290\boilerplatepayables\modulesPayables/xmlListGeneratePayable') ?>
 
 <!-- SELECT2 EXAMPLE -->
 <div class="card card-default">
@@ -118,15 +118,21 @@
 
         <div class="float-right">
             <div class="btn-group">
-
-                <a href="<?= base_url("admin/newPayables") ?>" class="btn btn-primary btnAddCustumers" data-target="#modalAddCustumers"><i class="fa fa-plus"></i>
-
-                    <?= lang('payables.add') ?>
-
+                <a href="<?= base_url("admin/newPayables") ?>" class="btn btn-primary">
+                    <i class="fa fa-plus"></i> <?= lang('payables.add') ?>
                 </a>
+            </div>
 
+            <div class="btn-group ml-2">
+                <button type="button" 
+                        class="btn btn-primary btnLoadXMLGeneratePayable" 
+                        data-toggle="modal" 
+                        data-target="#modalListXMLGeneratePayable" 
+                    <i class="fa fa-file-code"></i> <?= lang('payables.addFromCFDI') ?>
+                </button>
             </div>
         </div>
+        
     </div>
     <div class="card-body">
         <div class="row">
@@ -301,7 +307,7 @@
 
                     return `<td class="text-right py-0 align-middle">
                          <div class="btn-group btn-group-sm">
-                             <a href="<?= base_url('admin/editSell') ?>/${data.UUID}" class="btn btn-primary btn-edit"><i class="fas fa-pencil-alt"></i></a>
+                             <a href="<?= base_url('admin/editPayable') ?>/${data.UUID}" class="btn btn-primary btn-edit"><i class="fas fa-pencil-alt"></i></a>
                              <button class="btn btn-success btnSendMail" data-toggle="modal" correoCliente ="${data.correoCliente}" uuid="${data.UUID}" folio="${data.folio}" data-toggle="modal" data-target="#modalSendMail"  >  <i class=" fas fa-envelope"></i></button>
                              <button class="btn bg-warning btnImprimirVenta" uuid="${data.UUID}" ><i class="far fa-file-pdf"></i></button>
                              <button class="btn bg-maroon btnTimbrar" uuid="${data.UUID}" ><i class="fas fa-qrcode"></i></button>
@@ -480,6 +486,21 @@
         tableListXML.ajax.url(`<?= base_url('admin/xml/xmlSinAsignar/I') ?>`).load();
 
     });
+    
+    
+    
+    /*=============================================
+     Carga XML sin asignar para crear factura de proveedor
+     =============================================*/
+
+    $(".btnLoadXMLGeneratePayable").on("click", function () {
+        
+   
+
+        listXMLGeneratePayable.ajax.url(`<?= base_url('admin/xml/xmlSinAsignar/I') ?>`).load();
+
+    });
+
 
 
     /*=============================================

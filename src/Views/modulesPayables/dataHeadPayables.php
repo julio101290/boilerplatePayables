@@ -26,12 +26,12 @@
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="profile-tab" data-toggle="tab" data-target="#otrosDatos" type="button" role="tab" aria-controls="otrosDatos" aria-selected="false"><?= lang('newPayable.others') ?>
-                            </button>
+                        </button>
                     </li>
 
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="profile-tab" data-toggle="tab" data-target="#datosExtraVehiculo" type="button" role="tab" aria-controls="datosExtraVehiculo" aria-selected="false">
-                           <?= lang('newPayable.othersDataVehicle') ?>
+                            <?= lang('newPayable.othersDataVehicle') ?>
                         </button>
                     </li>
 
@@ -43,7 +43,7 @@
 
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="profile-tab" data-toggle="tab" data-target="#facturacionMX" type="button" role="tab" aria-controls="facturacionMX" aria-selected="false">
-                           <?= lang('newPayable.invoiceMX') ?>
+                            <?= lang('newPayable.invoiceMX') ?>
                         </button>
                     </li>
 
@@ -802,7 +802,7 @@
         // Initialize select2 storages
         $("#idSucursal").select2({
             ajax: {
-                url: "<?= site_url('admin/sucursales/getSucursalAjax') ?>",
+                url: "<?= site_url('admin/sucursales/getSucursalesAjax') ?>",
                 type: "post",
                 dataType: 'json',
                 delay: 250,
@@ -1377,7 +1377,7 @@
             var tipoDocumentoRelacionado = $("#tipoDocumentoRelacionado").val();
             var UUIDRelacion = $("#UUIDRelacion").val();
 
-
+            var UUIDCFDI = $("#UUIDCFDI").val();
 
             if ($("#esFacturaGlobal").is(':checked')) {
 
@@ -1504,7 +1504,7 @@
 
             datos.append("tipoDocumentoRelacionado", tipoDocumentoRelacionado);
             datos.append("UUIDRelacion", UUIDRelacion);
-
+            datos.append("UUIDCFDI", UUIDCFDI);
 
 
 
@@ -1862,8 +1862,6 @@
 
         }
 
-
-        $("#idSucursal").select2();
 
 <?php
 if ($folioComprobanteRD > 0) {

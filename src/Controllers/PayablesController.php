@@ -24,6 +24,7 @@ use julio101290\boilerplateinventory\Models\SaldosModel;
 use julio101290\boilerplatesells\Models\EnlacexmlModel;
 use julio101290\boilerplateCFDI\Models\XmlModel;
 use julio101290\boilerplateCFDI\Controllers\XmlController;
+use julio101290\boilerplatesuppliers\Models\ProveedoresModel;
 
 class PayablesController extends BaseController {
 
@@ -50,6 +51,7 @@ class PayablesController extends BaseController {
     protected $enlaceXML;
     protected $xml;
     protected $xmlController;
+    protected $suppliers;
 
     public function __construct() {
         $this->log = new LogModel();
@@ -73,6 +75,7 @@ class PayablesController extends BaseController {
         $this->enlaceXML = new EnlacexmlModel();
         $this->xml = new XmlModel();
         $this->xmlController = new XmlController();
+        $this->suppliers = new ProveedoresModel();
         helper('menu');
         helper('utilerias');
     }
@@ -439,6 +442,7 @@ class PayablesController extends BaseController {
         $titulos["formaPagoReceptor"] = "";
         $titulos["razonSocialReceptor"] = "";
         $titulos["codigoPostalReceptor"] = "";
+        $titulos["UUIDCFDI"] = "";
 
         $titulos["permisoAgregarArticulo"] = $permisoAgregarArticulo;
 
@@ -645,7 +649,7 @@ class PayablesController extends BaseController {
         }
 
         $authorize = $auth = service('authorization');
-        $permisoAgregarArticulo = $authorize->hasPermission('capturaarticulodesdeventa', $idUser);
+        $permisoAgregarArticulo = $authorize->hasPermission('capturaarticulodesdefacturaproveedor', $idUser);
 
         $payable = $this->payables->mdlGetPayableUUID($uuid, $empresasID);
 
@@ -691,6 +695,7 @@ class PayablesController extends BaseController {
         $titulos["idVehiculo"] = $payable["idVehiculo"];
 
         $titulos["uuidRelacion"] = $payable["UUIDRelacion"];
+        $titulos["UUIDCFDI"] = "";
 
         $datosVehiculo = $this->vehiculos->select("*")->where("id", $payable["idVehiculo"])->first();
 
@@ -744,6 +749,245 @@ class PayablesController extends BaseController {
         }
         $titulos["title"] = "Editar Venta";
         $titulos["subtitle"] = "Edición de Ventas";
+
+        $titulos["title"] = lang('newPayable.title');
+        $titulos["subtitle"] = lang('newPayable.subtitle');
+
+        return view('julio101290\boilerplatepayables\Views\newPayable', $titulos);
+    }
+
+    public function newPayableFromCFDI($uuid) {
+
+        helper('auth');
+        $userName = user()->username;
+        $idUser = user()->id;
+
+        $auth = service('authentication');
+        if (!$auth->check()) {
+
+            return redirect()->route('admin');
+        }
+
+
+        $auth = service('authentication');
+        if (!$auth->check()) {
+
+            return redirect()->route('admin');
+        }
+
+        helper('auth');
+        $userName = user()->username;
+        $idUser = user()->id;
+
+        $titulos["empresas"] = $this->empresa->mdlEmpresasPorUsuario($idUser);
+
+        if (count($titulos["empresas"]) == "0") {
+
+            $empresasID[0] = "0";
+        } else {
+
+            $empresasID = array_column($titulos["empresas"], "id");
+        }
+
+        $authorize = $auth = service('authorization');
+        $permisoAgregarArticulo = $authorize->hasPermission('capturaarticulodesdefacturaproveedor', $idUser);
+
+        $payable = $this->xml->where("uuidTimbre", $uuid)->asArray()->first();
+
+        $xmlText = $payable["archivoXML"];
+
+        $xml = \PhpCfdi\CfdiCleaner\Cleaner::staticClean($xmlText);
+
+        // create the main node structure
+        $comprobante = \CfdiUtils\Nodes\XmlNodeUtils::nodeFromXmlString($xml);
+
+        // create the CfdiData object, it contains all the required information
+        $cfdiData = (new \PhpCfdi\CfdiToPdf\CfdiDataBuilder())
+                ->build($comprobante);
+
+        $comprobante = $cfdiData->comprobante();
+
+        $emisor = $cfdiData->emisor();
+
+        $supplier = "";
+
+        $listProducts = [];
+        $conceptos = $comprobante->searchNodes('cfdi:Conceptos', 'cfdi:Concepto');
+
+        foreach ($conceptos as $concepto) {
+            // 1. Obtener valores base del concepto
+            $importeBase = (float) $concepto['Importe'];
+
+            // 2. Extraer impuestos
+            $traslados = $concepto->searchNodes('cfdi:Impuestos', 'cfdi:Traslados', 'cfdi:Traslado');
+            $retenciones = $concepto->searchNodes('cfdi:Impuestos', 'cfdi:Retenciones', 'cfdi:Retencion');
+
+            $totalTrasladosConcepto = 0;
+            $porcentTax = "0.00";
+            $tax = "0.00";
+            foreach ($traslados as $traslado) {
+                $impVal = (float) $traslado['Importe'];
+                $totalTrasladosConcepto += $impVal;
+                if ($traslado['Impuesto'] === '002') {
+                    $porcentTax = number_format((float) $traslado['TasaOCuota'], 2, ".", "");
+                    $tax = number_format($impVal, 2, ".", "");
+                }
+            }
+
+            $totalRetencionesConcepto = 0;
+            $porcentIVARet = "0.00";
+            $ivaRet = "0.00";
+            $porcentISRRet = "0.00";
+            $isrRet = "0.00";
+            foreach ($retenciones as $retencion) {
+                $retVal = (float) $retencion['Importe'];
+                $totalRetencionesConcepto += $retVal;
+                if ($retencion['Impuesto'] === '002') {
+                    $porcentIVARet = number_format((float) $retencion['TasaOCuota'], 2, ".", "");
+                    $ivaRet = number_format($retVal, 2, ".", "");
+                }
+                if ($retencion['Impuesto'] === '001') {
+                    $porcentISRRet = number_format((float) $retencion['TasaOCuota'], 2, ".", "");
+                    $isrRet = number_format($retVal, 2, ".", "");
+                }
+            }
+
+            // 3. CALCULAR NETO (Base + Traslados - Retenciones)
+            $valorNeto = ($importeBase + $totalTrasladosConcepto) - $totalRetencionesConcepto;
+
+            // Predial
+            $predialNode = $concepto->searchNode('cfdi:CuentaPredial');
+            $numPredial = $predialNode ? $predialNode['Numero'] : "";
+
+            $listProducts[] = [
+                "idProduct" => 0,
+                "codeProduct" => $concepto['NoIdentificacion'] ?: "",
+                "claveProductoSAT" => $concepto['ClaveProdServ'],
+                "claveUnidadSAT" => $concepto['ClaveUnidad'],
+                "unidad" => $concepto['Unidad'] ?: "",
+                "description" => $concepto['Descripcion'],
+                "cant" => number_format((float) $concepto['Cantidad'], 2, ".", ""),
+                "price" => number_format((float) $concepto['ValorUnitario'], 2, ".", ""),
+                "total" => number_format($importeBase, 2, ".", ""), // El total fiscal (subtotal del renglón)
+                "neto" => number_format($valorNeto, 2, ".", ""), // El neto real pagado por este artículo
+                "porcentTax" => $porcentTax,
+                "tax" => $tax,
+                "porcentIVARetenido" => $porcentIVARet,
+                "IVARetenido" => $ivaRet,
+                "porcentISRRetenido" => $porcentISRRet,
+                "ISRRetenido" => $isrRet,
+                "predial" => $numPredial,
+                "lote" => "",
+                "idAlmacen" => "",
+                "valorTasaExenta" => ($concepto['ObjetoImp'] === '01') ? "SI" : ""
+            ];
+        }
+
+        /**
+         * Llenado de Títulos y Datos de Proveedor
+         */
+        $dataSuplier = $this->suppliers->where("taxID", $payable["rfcEmisor"])->asArray()->first();
+
+        if (isset($dataSuplier)) {
+            $titulos["idCustumer"] = $dataSuplier["id"];
+            $titulos["nameCustumer"] = $dataSuplier["firstname"];
+        } else {
+            $titulos["idCustumer"] = "0";
+            $titulos["nameCustumer"] = "Seleccione Proveedor";
+        }
+
+        $titulos["idPayable"] = "0";
+        $titulos["folio"] = $payable["folio"];
+        $titulos["UUIDCFDI"] = $uuid;
+
+        $companieData = $this->empresa->where("id", $payable["idEmpresa"])->asArray()->first();
+
+        $titulos["idEmpresa"] = $companieData["id"];
+        $titulos["nombreEmpresa"] = $companieData["nombre"];
+
+        $titulos["idUser"] = $idUser;
+        $titulos["userName"] = $userName;
+        $titulos["listProducts"] = $listProducts;
+
+        // 3. OBTENER CATÁLOGOS (Como objetos para la vista)
+        $usoCFDI = $this->catalogosSAT->usosCfdi40()->searchByField("texto", "%%", 99999);
+        $formaPago = $this->catalogosSAT->formasDePago40()->searchByField("texto", "%%", 99999);
+        $metodoPago = $this->catalogosSAT->metodosDePago40()->searchByField("texto", "%%", 99999);
+        $regimenFiscal = $this->catalogosSAT->regimenesFiscales40()->searchByField("texto", "%%", 99999);
+
+        // 4. LLENAR $titulos (Datos Globales)
+        $receptor = $comprobante->searchNode('cfdi:Receptor');
+        $impuestosGlobal = $comprobante->searchNode('cfdi:Impuestos');
+
+        $ivaRetG = 0;
+        $isrRetG = 0;
+        foreach ($comprobante->searchNodes('cfdi:Impuestos', 'cfdi:Retenciones', 'cfdi:Retencion') as $rG) {
+            if ($rG['Impuesto'] === '002')
+                $ivaRetG += (float) $rG['Importe'];
+            if ($rG['Impuesto'] === '001')
+                $isrRetG += (float) $rG['Importe'];
+        }
+
+        // Totales de la Factura
+        $titulos["subTotal"] = number_format((float) ($comprobante['SubTotal'] ?? 0), 2, ".", "");
+        $titulos["total"] = number_format((float) ($comprobante['Total'] ?? 0), 2, ".", "");
+        $titulos["taxes"] = number_format((float) ($impuestosGlobal['TotalImpuestosTrasladados'] ?? 0), 2, ".", "");
+        $titulos["IVARetenido"] = number_format($ivaRetG, 2, ".");
+        $titulos["ISRRetenido"] = number_format($isrRetG, 2, ".");
+
+        $titulos["fecha"] = substr($payable["date"] ?? $comprobante['Fecha'], 0, 10);
+        $titulos["dateVen"] = $payable["dateVen"] ?? "";
+        $titulos["uuid"] = $cfdiData->timbreFiscalDigital()['UUID'] ?? "";
+        $titulos["idQuote"] = $payable["idQuote"] ?? "0";
+        $titulos["quoteTo"] = $payable["quoteTo"] ?? "";
+        $titulos["observations"] = $payable["generalObservations"] ?? "";
+
+        // Catalogos para la vista
+        $titulos["usoCFDI"] = $usoCFDI;
+        $titulos["metodoPago"] = $metodoPago;
+        $titulos["regimenFiscal"] = $regimenFiscal;
+        $titulos["formaPago"] = $formaPago;
+
+        // Receptor
+        $titulos["RFCReceptor"] = $payable["RFCReceptor"] ?? ($receptor['Rfc'] ?? "");
+        $titulos["regimenFiscalReceptor"] = $payable["regimenFiscalReceptor"] ?? ($receptor['RegimenFiscalReceptor'] ?? "");
+        $titulos["usoCFDIReceptor"] = $payable["usoCFDI"] ?? ($receptor['UsoCFDI'] ?? "");
+        $titulos["metodoPagoReceptor"] = $payable["metodoPago"] ?? ($comprobante['MetodoPago'] ?? "");
+        $titulos["formaPagoReceptor"] = $payable["formaPago"] ?? ($comprobante['FormaPago'] ?? "");
+        $titulos["razonSocialReceptor"] = $payable["razonSocialReceptor"] ?? ($receptor['Nombre'] ?? "");
+        $titulos["codigoPostalReceptor"] = $payable["codigoPostalReceptor"] ?? ($receptor['DomicilioFiscalReceptor'] ?? "");
+        $titulos["totalExento"] = number_format((float) ($payable["tasaCero"] ?? 0), 2, ".");
+        $titulos["uuidRelacion"] = $payable["UUIDRelacion"] ?? "";
+
+        // 5. VEHÍCULO Y SUCURSAL
+        $titulos["idVehiculo"] = $payable["idVehiculo"] ?? "0";
+        $dV = ($titulos["idVehiculo"] != "0") ? $this->vehiculos->where("id", $titulos["idVehiculo"])->first() : null;
+        $titulos["vehiculoNombre"] = $dV ? (($payable["tipoVehiculo"] ?? "") . " " . $dV["placas"] . " " . $dV["descripcion"]) : "Seleccione Vehiculo";
+
+        $titulos["idSucursal"] = $payable["idSucursal"] ?? "0";
+        $suc = ($titulos["idSucursal"] != "0") ? $this->sucursales->where("id", $titulos["idSucursal"])->first() : null;
+        $titulos["nombreSucursal"] = $suc ? ($suc["key"] . " " . $suc["name"]) : "Sin Sucursal";
+
+        // 6. COMPROBANTE RD
+        if (isset($payable["tipoComprobanteRD"]) && $payable["tipoComprobanteRD"] > 0) {
+            $cRD = $this->comprobantesRD->find($payable["tipoComprobanteRD"]);
+            $titulos["folioComprobanteRD"] = $payable["folioComprobanteRD"];
+            $titulos["tipoComprobanteRDID"] = $cRD["id"];
+            $titulos["tipoComprobanteRDNombre"] = $cRD["nombre"];
+            $titulos["tipoComprobanteRDPrefijo"] = $cRD["prefijo"];
+        } else {
+            $titulos["folioComprobanteRD"] = "0";
+            $titulos["tipoComprobanteRDID"] = "0";
+            $titulos["tipoComprobanteRDNombre"] = "0";
+            $titulos["tipoComprobanteRDPrefijo"] = "0";
+        }
+
+        $titulos["permisoAgregarArticulo"] = $permisoAgregarArticulo;
+        $titulos["title"] = "Editar Venta";
+        $titulos["subtitle"] = "Edición de Ventas";
+
+        $titulos["title"] = lang('newPayable.title');
+        $titulos["subtitle"] = lang('newPayable.subtitle');
 
         return view('julio101290\boilerplatepayables\Views\newPayable', $titulos);
     }
@@ -928,71 +1172,9 @@ class PayablesController extends BaseController {
 
                     $datosDetalle["predial"] = $value["predial"];
 
-                    //Valida Stock
-                    $products = $this->products->find($datosDetalle["idProduct"]);
+               
 
-                    if ($products["validateStock"] == "on") {
-
-                        if ($products["stock"] < $datosDetalle["cant"]) {
-
-                            echo "Stock agotado en el producto " . $datosDetalle["description"];
-                            $this->payablesDetail->db->transRollback();
-                            return;
-                        }
-                    }
-
-                    if ($products["inventarioRiguroso"] == "on") {
-
-                        $datosSaldo["idEmpresa"] = $datos["idEmpresa"];
-                        $datosSaldo["idAlmacen"] = $datosDetalle["idAlmacen"];
-                        $datosSaldo["idProducto"] = $datosDetalle["idProduct"];
-                        $datosSaldo["lote"] = $datosDetalle["lote"];
-
-                        /**
-                         * Verificamos saldo
-                         */
-                        $datosNuevosSaldo = $this->saldos->select("*")->where($datosSaldo)->first();
-
-                        if ($datosNuevosSaldo["cantidad"] < $datosDetalle["cant"]) {
-
-                            echo "Stock agotado en el producto " . $datosDetalle["description"];
-                            $this->inventory->db->transRollback();
-                            return;
-                        }
-
-                        $datosNuevosSaldo["cantidad"] = $datosNuevosSaldo["cantidad"] - $datosDetalle["cant"];
-
-                        $existenciaProducto["stock"] = $products["stock"] - $datosDetalle["cant"];
-
-                        if ($this->products->update($products["id"], $existenciaProducto) === false) {
-
-                            echo "error al actualizar el saldo $datosDetalle[idProduct]";
-
-                            $this->inventory->db->transRollback();
-                            return;
-                        }
-
-
-                        if ($this->saldos->update($datosNuevosSaldo["id"], $datosNuevosSaldo) === false) {
-
-
-
-                            $errores = $this->inventory->errors();
-
-                            $listErrors = "";
-
-                            foreach ($errores as $field => $error) {
-
-                                $listErrors .= $error . " ";
-                            }
-
-                            echo $listErrors . " error al actualizar el saldo $datosDetalle[idProduct]";
-                            ;
-
-                            $this->inventory->db->transRollback();
-                            return;
-                        }
-                    }
+ 
 
 
                     if ($this->payablesDetail->save($datosDetalle) === false) {
@@ -1003,24 +1185,7 @@ class PayablesController extends BaseController {
                         echo "</pre>";
 
                         return;
-                    } else {
-
-
-                        if ($products["validateStock"] == "on") {
-
-                            // ACTUALIZA STOCK
-                            $newStock = $products["stock"] - $datosDetalle["cant"];
-
-                            $updateDataStock["stock"] = $newStock;
-                            if ($this->products->update($datosDetalle["idProduct"], $updateDataStock) === false) {
-
-                                echo "error al actualizar el stock del producto $datosDetalle[idProducto]";
-
-                                $this->payablesDetail->db->transRollback();
-                                return;
-                            }
-                        }
-                    }
+                    } 
                 }
 
 
@@ -1085,6 +1250,35 @@ class PayablesController extends BaseController {
                         ;
                 }
 
+                if (strlen($datos["UUIDCFDI"]) > 5) {
+
+
+                    $datosEnlace["idDocumento"] = $idPayableInserted;
+                    $datosEnlace["uuidXML"] = $datos["UUIDCFDI"];
+                    $datosEnlace["tipo"] = "FPR";
+                    $datosEnlace["importe"] = $datos["total"];
+
+                    try {
+
+                        if ($this->enlaceXML->save($datosEnlace) === false) {
+
+                            $errores = $this->enlaceXML->errors();
+
+                            $listErrors = "";
+
+                            foreach ($errores as $field => $error) {
+
+                                $listErrors .= $error . " ";
+                            }
+                        }
+                    } catch (Exception $ex) {
+
+                        $this->payablesDetail->db->transRollback();
+                        echo "Error al enlazar el CFDI ".$e->getMessage();
+
+                        return;
+                    }
+                }
 
                 $datosBitacora["description"] = "Se guardo la cotizacion con los siguientes datos" . json_encode($datos);
                 $datosBitacora["user"] = $userName;

@@ -5,6 +5,7 @@ $payables["logUpdate"] = "El registro en ventas fue actualizado con los siguient
 $payables["logDeleted"] = "El registro en ventas fue eliminado con los siguientes datos:";
 $payables["msg_delete"] = "El Registro en ventas fue eliminado correctamente:";
 $payables["add"] = "Nueva Factura de Proveedor";
+$payables["addFromCFDI"] = "Nueva Factura de Proveedor Desde CFDI";
 $payables["edit"] = "Editar Factura de proveedor";
 $payables["createEdit"] = "Crear / Editar";
 $payables["title"] = "Admon. Facturas de Proveedor";
@@ -15,14 +16,14 @@ $payables["allCompanies"] = "Todas las empresas";
 $payables["branchoffice"] = "Sucursal";
 $payables["AllBranchoffice"] = "Todas las Sucursales ";
 $payables["custumer"] = "Cliente ";
-$payables["allCustumer"] = "Todos los Clientes ";
+$payables["allCustumer"] = "Todos los proveedores ";
 
 $payables["allPayables"] = "Todas las facturas";
 $payables["pendingPayment"] = "Pendiente de pago";
 
 $payables["fields"]["row"] = "#";
 $payables["fields"]["folio"] = "Folio";
-$payables["fields"]["custumer"] = "Cliente";
+$payables["fields"]["custumer"] = "Proveedor";
 $payables["fields"]["date"] = "Fecha";
 $payables["fields"]["expirationDate"] = "Fecha Vencimiento";
 

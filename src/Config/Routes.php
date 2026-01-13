@@ -20,6 +20,11 @@ $routes->group('admin', function ($routes) {
             , ['namespace' => 'julio101290\boilerplatepayables\Controllers']
     );
 
+    $routes->get('newPayableFromCFDI/(:any)'
+            , 'PayablesController::newPayableFromCFDI/$1'
+            , ['namespace' => 'julio101290\boilerplatepayables\Controllers']
+    );
+
     $routes->post('payables/save'
             , 'PayablesController::save'
             , ['namespace' => 'julio101290\boilerplatepayables\Controllers']
@@ -196,11 +201,11 @@ $routes->group('admin', function ($routes) {
     $routes->post('mailSettings/sendMailCotizacionesPDF'
             , 'SettingsMailController::sendMailCotizacionesPDF'
             , ['namespace' => 'julio101290\boilerplatepayables\Controllers']
-            );
+    );
 
     // Envio de facturas
     $routes->post('mailSettings/sendMailVenta'
             , 'SettingsMailController::sendMailVentasPDF'
             , ['namespace' => 'julio101290\boilerplatepayables\Controllers']
-            );
+    );
 });
