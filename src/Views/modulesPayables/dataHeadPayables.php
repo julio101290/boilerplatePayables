@@ -417,10 +417,11 @@
                                 <button type="button" class="btn bg-maroon btnPrint" data-toggle="modal" required="" data-placement="top" title="Imprimir">
                                     <i class="fa fa-print"> </i> <?= lang('newPayable.savePrintClose') ?>
                                 </button>
-
-                                <button type="button" class="btn bg-maroon btnTimbrar" data-toggle="modal" required="" data-placement="top" title="Timbrar">
-                                    <i class="fas fa-qrcode"> </i> <?= lang('newPayable.stamp') ?>
-                                </button>
+                                <div hidden>
+                                    <button  type="button" class="btn bg-maroon btnTimbrar" data-toggle="modal" required="" data-placement="top" title="Timbrar">
+                                        <i class="fas fa-qrcode"> </i> <?= lang('newPayable.stamp') ?>
+                                    </button>
+                                </div>
 
                             </div>
 

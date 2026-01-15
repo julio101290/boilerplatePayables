@@ -493,7 +493,7 @@ class PayablesController extends BaseController {
         return view('julio101290\boilerplatepayables\Views\reportPayablesProducts', $titulos);
     }
 
-    public function getXMLEnlazados($uuidVenta) {
+    public function getXMLEnlazadosFacturaProveedor($uuidVenta) {
 
         try {
 
@@ -512,6 +512,7 @@ class PayablesController extends BaseController {
 
                 // === WHERE principal ===
                 $builder->where('a.idDocumento', $datosVenta["id"]);
+                $builder->where('a.tipo', "FPR");
 
                 // === Total sin filtro ===
                 $total = $builder->countAllResults(false); // no reset

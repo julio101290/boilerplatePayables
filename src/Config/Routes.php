@@ -73,8 +73,8 @@ $routes->group('admin', function ($routes) {
             , ['namespace' => 'julio101290\boilerplatepayables\Controllers']
     );
 
-    $routes->get('xmlenlace/getXMLEnlazados/(:any)'
-            , 'PayablesController::getXMLEnlazados/$1'
+    $routes->get('xmlenlace/getXMLEnlazadosFacturaProveedor/(:any)'
+            , 'PayablesController::getXMLEnlazadosFacturaProveedor/$1'
             , ['namespace' => 'julio101290\boilerplatepayables\Controllers']
     );
 

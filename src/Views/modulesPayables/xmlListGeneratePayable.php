@@ -174,12 +174,15 @@
     $('#modalListXMLGeneratePayable').on('shown.bs.modal', function () {
         listXMLGeneratePayable.columns.adjust().responsive.recalc();
     });
-    
-    $(".listXMLGeneratePayable").on("click",".btn-makePayableFromXML",function(){
-    
-        console.log("Prueba");
-    
+
+    $(".listXMLGeneratePayable").on("click", ".btn-makePayableFromXML", function () {
+
+        var UUIDCFDI = $(this).attr("data-id");
+
+        window.open("<?= base_url('admin/newPayableFromCFDI') ?>" + "/" + UUIDCFDI, "_blank");
+
     });
+
 
 
 </script>

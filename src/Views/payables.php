@@ -514,7 +514,7 @@
 
         console.log(uuid);
 
-        tableInvoice.ajax.url(`<?= base_url('admin/xmlenlace/getXMLEnlazados') ?>/` + uuid).load();
+        tableInvoice.ajax.url(`<?= base_url('admin/xmlenlace/getXMLEnlazadosFacturaProveedor') ?>/` + uuid).load();
 
     });
 

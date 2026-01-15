@@ -76,7 +76,7 @@
         <div class="form-group">
             <label for="quoteRFCReceptorTo"><?= lang('newPayable.receiverSocialReason') ?></label>
             <input class="form-control" type="text" id='razonSocialReceptor' name='razonSocialReceptor' value="<?= $razonSocialReceptor ?>">
-            <input class="form-control" type="text" id='UUIDCFDI' name='UUIDCFDI' value="<?= $UUIDCFDI ?>">
+            <input class="form-control" type="hidden" id='UUIDCFDI' name='UUIDCFDI' value="<?= $UUIDCFDI ?>">
 
         </div>
     </div>
